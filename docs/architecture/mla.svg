@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160" role="img" aria-labelledby="mla-title mla-desc">
+<title id="mla-title">Multi-head Latent Attention</title><desc id="mla-desc">Low-rank Q/KV projections, decoupled RoPE and compressed decoding cache</desc>
+<defs>
+ <pattern id="mla-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#6686a4" opacity=".13"/></pattern>
+ <radialGradient id="mla-glow"><stop offset="0" stop-color="#1a364d" stop-opacity=".55"/><stop offset="1" stop-color="#0b1220" stop-opacity="0"/></radialGradient>
+ <marker id="mla-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#91abc1"/></marker>
+ <marker id="mla-skip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#d9ac6f"/></marker>
+</defs>
+<rect width="1600" height="1160" rx="24" fill="#0b1220"/>
+<rect width="1600" height="1160" rx="24" fill="url(#mla-dots)"/>
+<ellipse cx="1056.0" cy="380" rx="680" ry="480" fill="url(#mla-glow)"/>
+<style>text{font-family:Arial,Helvetica,sans-serif}.node text{pointer-events:none}.node:hover .box{stroke-width:3}.edge{fill:none;stroke:#91abc1;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.node.selected .box,.node.match .box{stroke:#fff;stroke-width:4}.node:focus-visible .box{stroke:#fff;stroke-width:4}</style>
+<text x="48" y="46" font-size="16" fill="#8fa7c6" font-weight="700" text-anchor="start" letter-spacing="2">LAMOE / MODEL GRAPH</text>
+<text x="48" y="94" font-size="36" fill="#f2f6ff" font-weight="700" text-anchor="start" letter-spacing="0">Multi-head Latent Attention</text>
+<text x="48" y="130" font-size="19" fill="#a1b1c8" font-weight="400" text-anchor="start" letter-spacing="0">Low-rank Q/KV projections, decoupled RoPE and compressed decoding cache</text>
+<rect x="36" y="170" width="1528" height="900" rx="20" fill="#101b2b" fill-opacity=".82" stroke="#28374a"/>
+<text x="60" y="204" font-size="18" fill="#e1ebfa" font-weight="700" text-anchor="start" letter-spacing="1">MLA / EXPANDED</text>
+<text x="60" y="233" font-size="16" fill="#8fa5bf" font-weight="400" text-anchor="start" letter-spacing="0">Per-head Q/K: 48 content + 16 rotary | V: 64 | 12 heads</text>
+<g class="node" data-node="mla-input" aria-label="Normalized input u"><title>Normalized input u: Output of the decoder attention RMSNorm. Three branches construct queries, latent keys/values and rotary keys.</title><rect class="box" x="655" y="262" width="290" height="64" rx="12" fill="#163749" stroke="#55cbe8" stroke-width="2"/>
+<text x="800.0" y="290.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Normalized input u</text>
+<text x="800.0" y="317.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">hidden width 768</text>
+</g>
+<path class="edge" d="M800 326 V362 H300 V404" marker-end="url(#mla-arrow)"/>
+<path class="edge" d="M800 326 V362 H800 V404" marker-end="url(#mla-arrow)"/>
+<path class="edge" d="M800 326 V362 H1300 V404" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-q-down" aria-label="Q down-projection"><title>Q down-projection: Bias-free query compression.</title><rect class="box" x="145" y="404" width="310" height="74" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="300.0" y="437.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Q down-projection</text>
+<text x="300.0" y="464.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">768 to 192</text>
+</g>
+<path class="edge" d="M300 478 V518" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-q-norm" aria-label="RMSNorm"><title>RMSNorm: Normalize the compressed query latent.</title><rect class="box" x="145" y="518" width="310" height="62" rx="12" fill="#163c50" stroke="#73cefb" stroke-width="2"/>
+<text x="300.0" y="545.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">RMSNorm</text>
+<text x="300.0" y="572.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">rank 192</text>
+</g>
+<path class="edge" d="M300 580 V620" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-q-up" aria-label="Q up-projection"><title>Q up-projection: Expand latent queries into per-head content and rotary components.</title><rect class="box" x="145" y="620" width="310" height="76" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="300.0" y="654.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Q up-projection</text>
+<text x="300.0" y="681.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">192 to 12 x (48 + 16)</text>
+</g>
+<path class="edge" d="M300 696 V736" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-q-rope" aria-label="Split Q / apply RoPE"><title>Split Q / apply RoPE: RoPE acts only on the rotary query coordinates. Content queries are unchanged.</title><rect class="box" x="145" y="736" width="310" height="76" rx="12" fill="#493921" stroke="#f4bf68" stroke-width="2"/>
+<text x="300.0" y="770.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Split Q / apply RoPE</text>
+<text x="300.0" y="797.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">48 content + 16 rotary</text>
+</g>
+<g class="node" data-node="mla-kv-down" aria-label="KV down-projection"><title>KV down-projection: Shared compressed latent for content keys and values.</title><rect class="box" x="645" y="404" width="310" height="74" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="800.0" y="437.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">KV down-projection</text>
+<text x="800.0" y="464.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">768 to 192</text>
+</g>
+<path class="edge" d="M800 478 V518" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-kv-norm" aria-label="RMSNorm"><title>RMSNorm: The normalized latent is retained in the inference cache.</title><rect class="box" x="645" y="518" width="310" height="62" rx="12" fill="#163c50" stroke="#73cefb" stroke-width="2"/>
+<text x="800.0" y="545.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">RMSNorm</text>
+<text x="800.0" y="572.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">rank 192</text>
+</g>
+<path class="edge" d="M800 580 V620" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-kv-cache" aria-label="Latent KV cache"><title>Latent KV cache: Cache stores compressed KV latent plus the 16-dimensional rotary key, not expanded per-head keys/values.</title><rect class="box" x="645" y="620" width="310" height="76" rx="12" fill="#342c58" stroke="#b3a0fa" stroke-width="2"/>
+<text x="800.0" y="654.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Latent KV cache</text>
+<text x="800.0" y="681.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">192 latent channels / token</text>
+</g>
+<path class="edge" d="M800 696 V736" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-kv-expand" aria-label="K/V up-projections"><title>K/V up-projections: Reconstruct expanded content keys and values from the latent for this attention call.</title><rect class="box" x="605" y="736" width="390" height="76" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="800.0" y="770.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">K/V up-projections</text>
+<text x="800.0" y="797.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">K: 12 x 48 | V: 12 x 64</text>
+</g>
+<g class="node" data-node="mla-k-rope" aria-label="Rotary-key projection"><title>Rotary-key projection: A shared rotary key is projected directly from the input.</title><rect class="box" x="1145" y="404" width="310" height="74" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1300.0" y="437.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Rotary-key projection</text>
+<text x="1300.0" y="464.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">768 to 16</text>
+</g>
+<path class="edge" d="M1300 478 V518" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-key-rope" aria-label="RoPE + rotary cache"><title>RoPE + rotary cache: Apply position rotation and retain rotary keys across decoding calls.</title><rect class="box" x="1145" y="518" width="310" height="62" rx="12" fill="#493921" stroke="#f4bf68" stroke-width="2"/>
+<text x="1300.0" y="545.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">RoPE + rotary cache</text>
+<text x="1300.0" y="572.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">16 channels / token</text>
+</g>
+<path class="edge" d="M1300 580 V736" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-key-join" aria-label="Concatenate K"><title>Concatenate K: Broadcast the rotary key across heads and concatenate with per-head content keys.</title><rect class="box" x="1145" y="736" width="310" height="76" rx="12" fill="#4b2f1d" stroke="#ffab61" stroke-width="2"/>
+<text x="1300.0" y="770.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Concatenate K</text>
+<text x="1300.0" y="797.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">48 content + 16 rotary</text>
+</g>
+<path class="edge" d="M995 774 H1145" marker-end="url(#mla-arrow)"/>
+<path class="edge" d="M300 812 V852 H610 V888" marker-end="url(#mla-arrow)"/>
+<path class="edge" d="M800 812 V888" marker-end="url(#mla-arrow)"/>
+<path class="edge" d="M1300 812 V852 H990 V888" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-sdpa" aria-label="Causal attention / SDPA"><title>Causal attention / SDPA: Scaled dot-product attention honors causal, document and padding masks. FlashAttention is an optional separately validated backend.</title><rect class="box" x="580" y="888" width="440" height="76" rx="12" fill="#342c58" stroke="#b3a0fa" stroke-width="2"/>
+<text x="800.0" y="922.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Causal attention / SDPA</text>
+<text x="800.0" y="949.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">QK width 64 | V width 64</text>
+</g>
+<path class="edge" d="M1020 926 H1112" marker-end="url(#mla-arrow)"/>
+<g class="node" data-node="mla-out-proj" aria-label="Output projection"><title>Output projection: Concatenate all value heads and project back to hidden width. The baseline optional MLA head gate is disabled.</title><rect class="box" x="1112" y="888" width="392" height="76" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1308.0" y="922.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Output projection</text>
+<text x="1308.0" y="949.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">12 x 64 to 768</text>
+</g>
+<text x="800" y="1030" font-size="18" fill="#aec0d8" font-weight="400" text-anchor="middle" letter-spacing="0">Document boundaries reset RoPE positions and block cross-document attention.</text>
+<text x="48" y="1130" font-size="16" fill="#879db8" font-weight="400" text-anchor="start" letter-spacing="0">Source-derived schematic | FP32 master weights | No runtime trace or latency claim</text>
+</svg>

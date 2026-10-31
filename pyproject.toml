@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lamoe"
+version = "0.1.0"
+description = "LaMoE: a compact hybrid MLA, Gated DeltaNet and mixture-of-experts language model"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{name = "Gitesh (IMvision12)"}]
+dependencies = ["torch>=2.9,<3", "safetensors>=0.4.3,<1", "numpy>=1.26,<3", "tokenizers>=0.23,<0.24"]
+
+[project.optional-dependencies]
+preprocessing = ["pyarrow>=17,<26", "huggingface_hub>=0.34,<2"]
+evaluation = ["lm-eval==0.4.13"]
+
+transformers = ["transformers==5.17.0", "huggingface_hub>=0.34,<2"]
+
+[project.scripts]
+lamoe-infer = "lamoe.inference:main"
+lamoe-preprocess = "lamoe.preprocessing.prepare:main"
+lamoe-sft = "lamoe.sft.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lamoe", "lamoe.*"]
+exclude = ["data*", "output*"]
+
+[tool.setuptools.package-data]
+"lamoe.transformers" = ["chat_template.jinja"]
+
+[tool.setuptools.data-files]
+"share/lamoe" = ["requirements*.txt"]
+"share/lamoe/configs" = ["configs/*.json"]
+"share/lamoe/docs" = ["docs/*.md", "docs/benchmark_sources.json"]
+"share/lamoe/docs/images" = ["docs/images/*.png"]
+"share/lamoe/docs/architecture" = ["docs/architecture/*.md", "docs/architecture/*.json", "docs/architecture/*.html", "docs/architecture/*.svg", "docs/architecture/*.png"]
+"share/lamoe/results" = ["results/*.csv"]

@@ -1,0 +1,70 @@
+[
+  {
+    "id": "S1",
+    "title": "EleutherAI Pythia-160M v1.1, step143000: official zero-shot evaluation JSON",
+    "url": "https://raw.githubusercontent.com/EleutherAI/pythia/main/evals/pythia-v1/pythia-160m/zero-shot/160m_step143000.json",
+    "note": "Explicit acc / acc_norm fields; full limit=null; old task version 0. Model identifier in JSON is pythia-v1.1-160m. HellaSwag is absent from this file.",
+    "retrieved_sha256": "47d6986215acd4ab22ab5a82e75d49645bfbb757efc76b0d0f305d62a1362a60",
+    "model_args": "pretrained=EleutherAI/pythia-v1.1-160m,revision=step143000"
+  },
+  {
+    "id": "S2",
+    "title": "EleutherAI Pythia-160M model card",
+    "url": "https://huggingface.co/EleutherAI/pythia-160m",
+    "note": "Apache-2.0; exact total parameter count 162,322,944. Pythia-410M is outside the requested range."
+  },
+  {
+    "id": "S3",
+    "title": "Cerebras-GPT-256M official model card: zero-shot table",
+    "url": "https://huggingface.co/cerebras/Cerebras-GPT-256M",
+    "note": "Apache-2.0; includes 111M and 256M base models. Published results rounded to three decimal places."
+  },
+  {
+    "id": "S4",
+    "title": "Cerebras-GPT paper, Appendix C.2",
+    "url": "https://arxiv.org/html/2304.03208v1",
+    "note": "Maximum continuation probability is used for main results; length-normalized results are separately tabulated. This report uses the unnormalized main results only."
+  },
+  {
+    "id": "S5",
+    "title": "HuggingFaceTB SmolLM2-135M-Instruct official card",
+    "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct",
+    "note": "Apache-2.0. Zero-shot unless noted. Base table column is specifically labelled SmolLM2-135M-8k. IFEval is prompt/instruction average; MMLU is cloze; GSM8K 5-shot; BBH 3-shot."
+  },
+  {
+    "id": "S6",
+    "title": "HuggingFaceTB SmolLM2-360M-Instruct official card",
+    "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct",
+    "note": "Apache-2.0. Zero-shot unless noted. IFEval average, MMLU cloze, GSM8K 5-shot and BBH 3-shot must not be pooled with local metrics."
+  },
+  {
+    "id": "S7",
+    "title": "Meta MobileLLM-R1: SmolLM2 and Gemma baseline reevaluations",
+    "url": "https://github.com/facebookresearch/MobileLLM-R1#evaluation",
+    "note": "External reevaluations: HumanEval 0-shot pass@1; MBPP 3-shot; Gemma PT MMLU 5-shot and GSM8K 8-shot; Gemma IT GSM8K 0-shot. The Gemma rows identify size268M. These results are distinct from model-author card results."
+  },
+  {
+    "id": "S8",
+    "title": "Google Gemma 3 model card: dedicated 270M benchmark tables",
+    "url": "https://ai.google.dev/gemma/docs/core/model_card_3#gemma_3_270m",
+    "note": "Dedicated270M PT and IT tables only. PT: HellaSwag10-shot, PIQA0, TriviaQA5, ARC-C25, WinoGrande5. IT: HellaSwag/PIQA/ARC-C/WinoGrande/IFEval0-shot; BBH few-shot count unspecified. IFEval51.2 aggregation is not specified. Larger-model rows are excluded."
+  },
+  {
+    "id": "S9",
+    "title": "Google Gemma 3 270M model card and licence tag",
+    "url": "https://huggingface.co/google/gemma-3-270m",
+    "note": "Gemma custom terms; open-weight model, not labelled Apache/MIT here. Public card only was consulted; no gated weights or accounts were accessed."
+  },
+  {
+    "id": "S10",
+    "title": "Meta OPT-125M model card",
+    "url": "https://huggingface.co/facebook/opt-125m",
+    "note": "OPT125M base model. Custom OPT licence; included at user request. Numeric zero-shot references come from Cerebras paper Table8, not a differently-shot leaderboard."
+  },
+  {
+    "id": "S11",
+    "title": "Meta OPT-350M model card and distributed licence",
+    "url": "https://huggingface.co/facebook/opt-350m",
+    "note": "OPT350M base model, custom OPT licence (non-commercial research terms). Included at user request. No weights were downloaded."
+  }
+]

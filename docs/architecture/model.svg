@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1380" viewBox="0 0 1600 1380" role="img" aria-labelledby="model-title model-desc">
+<title id="model-title">LaMoE 247.65M</title><desc id="model-desc">16 layers  /  768 hidden width  /  32K vocabulary  /  2,048-token context</desc>
+<defs>
+ <pattern id="model-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#6686a4" opacity=".13"/></pattern>
+ <radialGradient id="model-glow"><stop offset="0" stop-color="#1a364d" stop-opacity=".55"/><stop offset="1" stop-color="#0b1220" stop-opacity="0"/></radialGradient>
+ <marker id="model-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#91abc1"/></marker>
+ <marker id="model-skip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#d9ac6f"/></marker>
+</defs>
+<rect width="1600" height="1380" rx="24" fill="#0b1220"/>
+<rect width="1600" height="1380" rx="24" fill="url(#model-dots)"/>
+<ellipse cx="1056.0" cy="380" rx="680" ry="480" fill="url(#model-glow)"/>
+<style>text{font-family:Arial,Helvetica,sans-serif}.node text{pointer-events:none}.node:hover .box{stroke-width:3}.edge{fill:none;stroke:#91abc1;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.node.selected .box,.node.match .box{stroke:#fff;stroke-width:4}.node:focus-visible .box{stroke:#fff;stroke-width:4}</style>
+<text x="48" y="46" font-size="16" fill="#8fa7c6" font-weight="700" text-anchor="start" letter-spacing="2">LAMOE / MODEL GRAPH</text>
+<text x="48" y="94" font-size="36" fill="#f2f6ff" font-weight="700" text-anchor="start" letter-spacing="0">LaMoE 247.65M</text>
+<text x="48" y="130" font-size="19" fill="#a1b1c8" font-weight="400" text-anchor="start" letter-spacing="0">16 layers  /  768 hidden width  /  32K vocabulary  /  2,048-token context</text>
+<rect x="36" y="170" width="432" height="1150" rx="20" fill="#101b2b" fill-opacity=".82" stroke="#28374a"/>
+<text x="60" y="204" font-size="18" fill="#e1ebfa" font-weight="700" text-anchor="start" letter-spacing="1">MODEL OVERVIEW</text>
+<text x="60" y="233" font-size="16" fill="#8fa5bf" font-weight="400" text-anchor="start" letter-spacing="0">Four-block pattern repeated four times</text>
+<rect x="496" y="170" width="1068" height="1150" rx="20" fill="#101b2b" fill-opacity=".82" stroke="#28374a"/>
+<text x="520" y="204" font-size="18" fill="#e1ebfa" font-weight="700" text-anchor="start" letter-spacing="1">HYBRID BLOCK / EXPANDED</text>
+<text x="520" y="233" font-size="16" fill="#8fa5bf" font-weight="400" text-anchor="start" letter-spacing="0">Layers 4, 8, 12, 16 | pre-RMSNorm residual block</text>
+<g class="node" data-node="model-input" aria-label="Input tokens"><title>Input tokens: Native token IDs. A valid token mask and document boundaries control attention and state resets.</title><rect class="box" x="142" y="268" width="220" height="54" rx="12" fill="#163749" stroke="#55cbe8" stroke-width="2"/>
+<text x="252.0" y="291.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Input tokens</text>
+<text x="252.0" y="318.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">[batch, sequence]</text>
+</g>
+<path class="edge" d="M252 322 V356" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-embedding" aria-label="Embedding"><title>Embedding: Input embeddings share their weight matrix with the output vocabulary projection.</title><rect class="box" x="102" y="356" width="300" height="76" rx="12" fill="#342c58" stroke="#b3a0fa" stroke-width="2"/>
+<text x="252.0" y="390.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Embedding</text>
+<text x="252.0" y="417.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">32,000 x 768</text>
+</g>
+<path class="edge" d="M252 432 V504" marker-end="url(#model-arrow)"/>
+<rect x="69" y="466" width="366" height="430" rx="18" fill="#0a1523" stroke="#667995" stroke-dasharray="6 5"/>
+<text x="91" y="493" font-size="15" fill="#aabbd3" font-weight="700" text-anchor="start" letter-spacing="1">DECODER PATTERN x4</text>
+<g class="node" data-node="model-block-1" aria-label="MLA + dense FFN"><title>MLA + dense FFN: Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.</title><rect class="box" x="96" y="514" width="312" height="68" rx="12" fill="#2f3546" stroke="#a9b9dc" stroke-width="2"/>
+<text x="252.0" y="544.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">MLA + dense FFN</text>
+<text x="252.0" y="571.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">Layers 1, 5, 9, 13</text>
+</g>
+<path class="edge" d="M252 582 V602" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-block-2" aria-label="MLA + MoE"><title>MLA + MoE: Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.</title><rect class="box" x="96" y="602" width="312" height="68" rx="12" fill="#2f3546" stroke="#a9b9dc" stroke-width="2"/>
+<text x="252.0" y="632.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">MLA + MoE</text>
+<text x="252.0" y="659.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">Layers 2, 6, 10, 14</text>
+</g>
+<path class="edge" d="M252 670 V690" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-block-3" aria-label="MLA + dense FFN"><title>MLA + dense FFN: Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.</title><rect class="box" x="96" y="690" width="312" height="68" rx="12" fill="#2f3546" stroke="#a9b9dc" stroke-width="2"/>
+<text x="252.0" y="720.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">MLA + dense FFN</text>
+<text x="252.0" y="747.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">Layers 3, 7, 11, 15</text>
+</g>
+<path class="edge" d="M252 758 V778" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-block-4" aria-label="MLA/GDN + MoE"><title>MLA/GDN + MoE: Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.</title><rect class="box" x="96" y="778" width="312" height="68" rx="12" fill="#1e3942" stroke="#73d8c8" stroke-width="2"/>
+<text x="252.0" y="808.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">MLA/GDN + MoE</text>
+<text x="252.0" y="835.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">Layers 4, 8, 12, 16</text>
+</g>
+<path class="edge" d="M252 846 V940" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-final-norm" aria-label="RMSNorm"><title>RMSNorm: Final RMS normalization before the vocabulary projection.</title><rect class="box" x="132" y="940" width="240" height="62" rx="12" fill="#163c50" stroke="#73cefb" stroke-width="2"/>
+<text x="252.0" y="967.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">RMSNorm</text>
+<text x="252.0" y="994.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">hidden width 768</text>
+</g>
+<path class="edge" d="M252 1002 V1042" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-head" aria-label="Linear / tied head"><title>Linear / tied head: Bias-free output projection; no additional embedding matrix is counted.</title><rect class="box" x="102" y="1042" width="300" height="76" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="252.0" y="1076.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Linear / tied head</text>
+<text x="252.0" y="1103.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">768 to 32,000</text>
+</g>
+<path class="edge" d="M252 1118 V1160" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-logits" aria-label="Output logits"><title>Output logits: Next-token logits. Native inference uses a compressed attention cache and GDN recurrent/convolution states.</title><rect class="box" x="142" y="1160" width="220" height="60" rx="12" fill="#472740" stroke="#ee9cd2" stroke-width="2"/>
+<text x="252.0" y="1186.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Output logits</text>
+<text x="252.0" y="1213.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">[batch, sequence, 32K]</text>
+</g>
+<text x="252" y="1260" font-size="18" fill="#d5e1f4" font-weight="700" text-anchor="middle" letter-spacing="0">247,650,340 total parameters</text>
+<text x="252" y="1290" font-size="16" fill="#9bacc3" font-weight="400" text-anchor="middle" letter-spacing="0">134,404,132 active-path convention</text>
+<g class="node" data-node="model-hidden-in" aria-label="Hidden state x"><title>Hidden state x: Input to one hybrid decoder layer. Dashed paths preserve residuals around mixing and FFN.</title><rect class="box" x="890" y="274" width="240" height="56" rx="12" fill="#163749" stroke="#55cbe8" stroke-width="2"/>
+<text x="1010.0" y="298.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Hidden state x</text>
+<text x="1010.0" y="325.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">[batch, sequence, 768]</text>
+</g>
+<path class="edge" d="M1010 330 V366" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-attention-norm" aria-label="RMSNorm"><title>RMSNorm: The same normalized hidden state is fed to MLA, GDN and the scalar fusion router.</title><rect class="box" x="880" y="366" width="260" height="64" rx="12" fill="#163c50" stroke="#73cefb" stroke-width="2"/>
+<text x="1010.0" y="394.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">RMSNorm</text>
+<text x="1010.0" y="421.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">u = RMSNorm(x)</text>
+</g>
+<path class="edge" d="M1010 430 V454 H720 V492" marker-end="url(#model-arrow)"/>
+<path class="edge" d="M1010 454 V492" marker-end="url(#model-arrow)"/>
+<path class="edge" d="M1010 454 H1310 V492" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-mla" aria-label="Latent attention"><title>Latent attention: Low-rank query and KV projections, decoupled RoPE, causal SDPA and a compressed KV cache.</title><rect class="box" x="558" y="492" width="324" height="124" rx="12" fill="#342c58" stroke="#b3a0fa" stroke-width="2"/>
+<text x="720.0" y="550.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Latent attention</text>
+<text x="720.0" y="577.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">12 heads / Q and KV rank 192</text>
+</g>
+<g class="node" data-node="model-fusion-router" aria-label="Fusion gate g"><title>Fusion gate g: A separate per-token scalar router blends attention and recurrence. Both branches execute.</title><rect class="box" x="910" y="492" width="200" height="94" rx="12" fill="#493921" stroke="#f4bf68" stroke-width="2"/>
+<text x="1010.0" y="535.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Fusion gate g</text>
+<text x="1010.0" y="562.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">sigmoid(Linear(u))</text>
+</g>
+<g class="node" data-node="model-gdn" aria-label="Gated DeltaNet"><title>Gated DeltaNet: Q/K/V causal depthwise convolutions, FP32 delta recurrence and output gating.</title><rect class="box" x="1148" y="492" width="324" height="124" rx="12" fill="#1e3942" stroke="#73d8c8" stroke-width="2"/>
+<text x="1310.0" y="550.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Gated DeltaNet</text>
+<text x="1310.0" y="577.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">4 heads / 64 x 64 state</text>
+</g>
+<path class="edge" d="M720 616 V670 H860 V694" marker-end="url(#model-arrow)"/>
+<path class="edge" d="M1310 616 V670 H1160 V694" marker-end="url(#model-arrow)"/>
+<path class="edge" d="M1010 586 V694" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-blend" aria-label="Weighted blend"><title>Weighted blend: Soft fusion combines both full branch outputs. It does not skip one branch.</title><rect class="box" x="796" y="694" width="428" height="82" rx="12" fill="#493921" stroke="#f4bf68" stroke-width="2"/>
+<text x="1010.0" y="731.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Weighted blend</text>
+<text x="1010.0" y="758.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">(1 - g) x MLA(u) + g x GDN(u)</text>
+</g>
+<path class="edge" d="M1010 776 V816" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-attn-add" aria-label="Add residual"><title>Add residual: First residual connection around the sequence mixing sublayer.</title><rect class="box" x="920" y="816" width="180" height="56" rx="12" fill="#4b2f1d" stroke="#ffab61" stroke-width="2"/>
+<text x="1010.0" y="840.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Add residual</text>
+<text x="1010.0" y="867.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">x + mixed output</text>
+</g>
+<path class="edge" d="M1130 302 H1504 V844 H1100" style="stroke:#d9ac6f;stroke-dasharray:7 6" marker-end="url(#model-skip)"/>
+<text x="1490" y="748" font-size="18" fill="#d9ac6f" font-weight="400" text-anchor="end" letter-spacing="0">x</text>
+<path class="edge" d="M1010 872 V914" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-ffn-norm" aria-label="RMSNorm"><title>RMSNorm: A distinct pre-FFN normalization feeds the shared expert and the routed expert branch.</title><rect class="box" x="880" y="914" width="260" height="64" rx="12" fill="#163c50" stroke="#73cefb" stroke-width="2"/>
+<text x="1010.0" y="942.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">RMSNorm</text>
+<text x="1010.0" y="969.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">v = RMSNorm(x)</text>
+</g>
+<path class="edge" d="M1010 978 V1014" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-moe" aria-label="Shared + routed MoE"><title>Shared + routed MoE: An always-active shared SwiGLU plus the weighted sum of two selected SwiGLU experts. Expert routing is independent of the attention fusion gate.</title><rect class="box" x="780" y="1014" width="460" height="82" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1010.0" y="1051.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Shared + routed MoE</text>
+<text x="1010.0" y="1078.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">shared width 512 + top-2 of 8 (width 1,024)</text>
+</g>
+<path class="edge" d="M1010 1096 V1132" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-ffn-add" aria-label="Add residual"><title>Add residual: Second residual connection. Padding positions are zeroed after the block.</title><rect class="box" x="920" y="1132" width="180" height="56" rx="12" fill="#4b2f1d" stroke="#ffab61" stroke-width="2"/>
+<text x="1010.0" y="1156.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Add residual</text>
+<text x="1010.0" y="1183.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">x + FFN(v)</text>
+</g>
+<path class="edge" d="M1010 892 H1482 V1160 H1100" style="stroke:#d9ac6f;stroke-dasharray:7 6" marker-end="url(#model-skip)"/>
+<path class="edge" d="M1010 1188 V1222" marker-end="url(#model-arrow)"/>
+<g class="node" data-node="model-hidden-out" aria-label="Hidden state"><title>Hidden state: Same hidden width, with document-aware attention and recurrent resets preserved.</title><rect class="box" x="890" y="1222" width="240" height="56" rx="12" fill="#472740" stroke="#ee9cd2" stroke-width="2"/>
+<text x="1010.0" y="1246.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Hidden state</text>
+<text x="1010.0" y="1273.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">to the next decoder layer</text>
+</g>
+<text x="48" y="1350" font-size="16" fill="#879db8" font-weight="400" text-anchor="start" letter-spacing="0">Source-derived schematic | FP32 master weights | No runtime trace or latency claim</text>
+</svg>

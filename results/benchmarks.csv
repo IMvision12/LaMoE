@@ -1,0 +1,20 @@
+benchmark,metric,score_percent,correct,examples,num_fewshot,context_limit,max_new_tokens,prompt_format
+hellaswag,acc,29.7450707030472,2987,10042,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+hellaswag,acc_norm,32.35411272654849,3249,10042,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+piqa,acc,59.30359085963003,1090,1838,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+piqa,acc_norm,60.010881392818284,1103,1838,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+arc_challenge,acc,22.440273037542664,263,1172,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+arc_challenge,acc_norm,24.914675767918087,292,1172,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+winogrande,acc,50.98658247829518,646,1267,0,2048,,"Raw completion, native BOS exactly once; no chat template, no system/identity facts."
+ifeval,inst_level_loose_acc,49.280575539568346,411,834,0,2048,1280,Native v2 LaMoE chat: BOS USER prompt END_TURN ASSISTANT. No system message or injected identity facts.
+ifeval,inst_level_strict_acc,46.882494004796165,391,834,0,2048,1280,Native v2 LaMoE chat: BOS USER prompt END_TURN ASSISTANT. No system message or injected identity facts.
+ifeval,prompt_level_loose_acc,34.011090573012936,184,541,0,2048,1280,Native v2 LaMoE chat: BOS USER prompt END_TURN ASSISTANT. No system message or injected identity facts.
+ifeval,prompt_level_strict_acc,32.53234750462107,176,541,0,2048,1280,Native v2 LaMoE chat: BOS USER prompt END_TURN ASSISTANT. No system message or injected identity facts.
+triviaqa,exact_match,1.0811413285777975,194,17944,0,2048,256,Native LaMoE v2 user/assistant chat; no system or injected identity facts.
+gsm8k,exact_match_flexible_extract,8.794541319181198,116,1319,0,2048,1024,Native LaMoE v2 user/assistant chat; no system or injected identity facts.
+gsm8k,exact_match_strict_match,0.0758150113722517,1,1319,0,2048,1024,Native LaMoE v2 user/assistant chat; no system or injected identity facts.
+mmlu,acc,25.14599059962968,3531,14042,0,2048,,Official raw multiple-choice prompt with native BOS; no chat/system.
+humaneval_instruct,pass_at_1,15.24390243902439,25,164,0,2048,1024,Official instruct task text and assistant gen_prefix in native LaMoE v2 chat; no system identity facts.
+mbpp_instruct,pass_at_1,13.8,69,500,0,2048,256,Official instruct task text and assistant gen_prefix in native LaMoE v2 chat; no system identity facts.
+bbh_cot_zeroshot,exact_match_flexible_extract,20.11979726616495,1310,6511,0,2048,1024,Official zero-shot chain-of-thought task text/description in native LaMoE v2 user chat; no identity system facts.
+bbh_cot_zeroshot,exact_match_strict_match,4.315773306711718,281,6511,0,2048,1024,Official zero-shot chain-of-thought task text/description in native LaMoE v2 user chat; no identity system facts.

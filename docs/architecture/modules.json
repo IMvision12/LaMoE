@@ -1,0 +1,421 @@
+{
+  "model-input": {
+    "label": "Input tokens",
+    "category": "input",
+    "description": "Native token IDs. A valid token mask and document boundaries control attention and state resets.",
+    "attributes": {
+      "context_limit": 2048
+    },
+    "source": ""
+  },
+  "model-embedding": {
+    "label": "Embedding",
+    "category": "embed",
+    "description": "Input embeddings share their weight matrix with the output vocabulary projection.",
+    "attributes": {
+      "parameters": 24576000,
+      "weight_tied": "lm_head.weight"
+    },
+    "source": "lamoe/model/modeling_lamoe.py"
+  },
+  "model-block-1": {
+    "label": "MLA + dense FFN",
+    "category": "module",
+    "description": "Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.",
+    "attributes": {
+      "repetitions": 4,
+      "shared_weights": false
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-block-2": {
+    "label": "MLA + MoE",
+    "category": "module",
+    "description": "Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.",
+    "attributes": {
+      "repetitions": 4,
+      "shared_weights": false
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-block-3": {
+    "label": "MLA + dense FFN",
+    "category": "module",
+    "description": "Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.",
+    "attributes": {
+      "repetitions": 4,
+      "shared_weights": false
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-block-4": {
+    "label": "MLA/GDN + MoE",
+    "category": "recur",
+    "description": "Each block has independent parameters. Each sequence mixing and FFN sublayer is pre-normalized and residual.",
+    "attributes": {
+      "repetitions": 4,
+      "shared_weights": false
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-final-norm": {
+    "label": "RMSNorm",
+    "category": "norm",
+    "description": "Final RMS normalization before the vocabulary projection.",
+    "attributes": {
+      "epsilon": 1e-06
+    },
+    "source": "lamoe/model/normalization.py"
+  },
+  "model-head": {
+    "label": "Linear / tied head",
+    "category": "linear",
+    "description": "Bias-free output projection; no additional embedding matrix is counted.",
+    "attributes": {
+      "tied_to": "embedding.weight"
+    },
+    "source": "lamoe/model/modeling_lamoe.py"
+  },
+  "model-logits": {
+    "label": "Output logits",
+    "category": "output",
+    "description": "Next-token logits. Native inference uses a compressed attention cache and GDN recurrent/convolution states.",
+    "attributes": {},
+    "source": ""
+  },
+  "model-hidden-in": {
+    "label": "Hidden state x",
+    "category": "input",
+    "description": "Input to one hybrid decoder layer. Dashed paths preserve residuals around mixing and FFN.",
+    "attributes": {},
+    "source": ""
+  },
+  "model-attention-norm": {
+    "label": "RMSNorm",
+    "category": "norm",
+    "description": "The same normalized hidden state is fed to MLA, GDN and the scalar fusion router.",
+    "attributes": {
+      "hidden_size": 768
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-mla": {
+    "label": "Latent attention",
+    "category": "embed",
+    "description": "Low-rank query and KV projections, decoupled RoPE, causal SDPA and a compressed KV cache.",
+    "attributes": {
+      "heads": 12,
+      "q_rank": 192,
+      "kv_rank": 192,
+      "content_qk": 48,
+      "rope_qk": 16,
+      "value_dim": 64
+    },
+    "source": "lamoe/model/mla.py"
+  },
+  "model-fusion-router": {
+    "label": "Fusion gate g",
+    "category": "gate",
+    "description": "A separate per-token scalar router blends attention and recurrence. Both branches execute.",
+    "attributes": {
+      "projection": "768 to 1",
+      "initial_gate": 0.1,
+      "dtype": "FP32 gate calculation"
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-gdn": {
+    "label": "Gated DeltaNet",
+    "category": "recur",
+    "description": "Q/K/V causal depthwise convolutions, FP32 delta recurrence and output gating.",
+    "attributes": {
+      "heads": 4,
+      "key_dim": 64,
+      "value_dim": 64,
+      "conv_width": 4,
+      "state_dtype": "FP32"
+    },
+    "source": "lamoe/model/gated_deltanet.py"
+  },
+  "model-blend": {
+    "label": "Weighted blend",
+    "category": "gate",
+    "description": "Soft fusion combines both full branch outputs. It does not skip one branch.",
+    "attributes": {
+      "output_width": 768
+    },
+    "source": "lamoe/model/layers.py"
+  },
+  "model-attn-add": {
+    "label": "Add residual",
+    "category": "add",
+    "description": "First residual connection around the sequence mixing sublayer.",
+    "attributes": {},
+    "source": "lamoe/model/layers.py"
+  },
+  "model-ffn-norm": {
+    "label": "RMSNorm",
+    "category": "norm",
+    "description": "A distinct pre-FFN normalization feeds the shared expert and the routed expert branch.",
+    "attributes": {},
+    "source": "lamoe/model/layers.py"
+  },
+  "model-moe": {
+    "label": "Shared + routed MoE",
+    "category": "linear",
+    "description": "An always-active shared SwiGLU plus the weighted sum of two selected SwiGLU experts. Expert routing is independent of the attention fusion gate.",
+    "attributes": {
+      "experts": 8,
+      "selected_per_token": 2,
+      "routed_width": 1024,
+      "shared_width": 512,
+      "capacity_drop": false
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "model-ffn-add": {
+    "label": "Add residual",
+    "category": "add",
+    "description": "Second residual connection. Padding positions are zeroed after the block.",
+    "attributes": {},
+    "source": "lamoe/model/layers.py"
+  },
+  "model-hidden-out": {
+    "label": "Hidden state",
+    "category": "output",
+    "description": "Same hidden width, with document-aware attention and recurrent resets preserved.",
+    "attributes": {},
+    "source": ""
+  },
+  "mla-input": {
+    "label": "Normalized input u",
+    "category": "input",
+    "description": "Output of the decoder attention RMSNorm. Three branches construct queries, latent keys/values and rotary keys.",
+    "attributes": {},
+    "source": ""
+  },
+  "mla-q-down": {
+    "label": "Q down-projection",
+    "category": "linear",
+    "description": "Bias-free query compression.",
+    "attributes": {
+      "in_features": 768,
+      "out_features": 192
+    },
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-q-norm": {
+    "label": "RMSNorm",
+    "category": "norm",
+    "description": "Normalize the compressed query latent.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-q-up": {
+    "label": "Q up-projection",
+    "category": "linear",
+    "description": "Expand latent queries into per-head content and rotary components.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-q-rope": {
+    "label": "Split Q / apply RoPE",
+    "category": "gate",
+    "description": "RoPE acts only on the rotary query coordinates. Content queries are unchanged.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-kv-down": {
+    "label": "KV down-projection",
+    "category": "linear",
+    "description": "Shared compressed latent for content keys and values.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-kv-norm": {
+    "label": "RMSNorm",
+    "category": "norm",
+    "description": "The normalized latent is retained in the inference cache.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-kv-cache": {
+    "label": "Latent KV cache",
+    "category": "embed",
+    "description": "Cache stores compressed KV latent plus the 16-dimensional rotary key, not expanded per-head keys/values.",
+    "attributes": {
+      "latent_channels": 192,
+      "rotary_key_channels": 16
+    },
+    "source": "lamoe/model/cache.py"
+  },
+  "mla-kv-expand": {
+    "label": "K/V up-projections",
+    "category": "linear",
+    "description": "Reconstruct expanded content keys and values from the latent for this attention call.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-k-rope": {
+    "label": "Rotary-key projection",
+    "category": "linear",
+    "description": "A shared rotary key is projected directly from the input.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-key-rope": {
+    "label": "RoPE + rotary cache",
+    "category": "gate",
+    "description": "Apply position rotation and retain rotary keys across decoding calls.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-key-join": {
+    "label": "Concatenate K",
+    "category": "add",
+    "description": "Broadcast the rotary key across heads and concatenate with per-head content keys.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-sdpa": {
+    "label": "Causal attention / SDPA",
+    "category": "embed",
+    "description": "Scaled dot-product attention honors causal, document and padding masks. FlashAttention is an optional separately validated backend.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "mla-out-proj": {
+    "label": "Output projection",
+    "category": "linear",
+    "description": "Concatenate all value heads and project back to hidden width. The baseline optional MLA head gate is disabled.",
+    "attributes": {},
+    "source": "lamoe/model/mla.py"
+  },
+  "moe-input": {
+    "label": "Normalized input v",
+    "category": "input",
+    "description": "Only valid tokens participate in dispatch and router statistics.",
+    "attributes": {},
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-shared": {
+    "label": "Always-active shared expert",
+    "category": "linear",
+    "description": "The shared expert runs for every valid token. Its output is added without a routed-expert weight.",
+    "attributes": {
+      "intermediate_size": 512
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-router": {
+    "label": "Expert router / Linear",
+    "category": "gate",
+    "description": "A distinct bias-free linear router produces one logit per expert. These are not the hybrid attention fusion weights.",
+    "attributes": {},
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-topk": {
+    "label": "Top-2 + selected softmax",
+    "category": "gate",
+    "description": "Select the two highest logits and normalize only those selected logits with softmax.",
+    "attributes": {
+      "experts_per_token": 2,
+      "normalization": "softmax over selected logits"
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-0": {
+    "label": "E0",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 0
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-1": {
+    "label": "E1",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 1
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-2": {
+    "label": "E2",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 2
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-3": {
+    "label": "E3",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 3
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-4": {
+    "label": "E4",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 4
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-5": {
+    "label": "E5",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 5
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-6": {
+    "label": "E6",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 6
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-expert-7": {
+    "label": "E7",
+    "category": "linear",
+    "description": "One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.",
+    "attributes": {
+      "intermediate_size": 1024,
+      "expert_index": 7
+    },
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-weighted": {
+    "label": "Weighted sum of selected outputs",
+    "category": "linear",
+    "description": "The selected expert outputs are scaled by their router weights and accumulated back into the original token positions.",
+    "attributes": {},
+    "source": "lamoe/model/feedforward.py"
+  },
+  "moe-sum": {
+    "label": "Add shared + routed",
+    "category": "add",
+    "description": "Final MoE output equals the always-active shared output plus the selected weighted expert outputs.",
+    "attributes": {},
+    "source": "lamoe/model/feedforward.py"
+  }
+}

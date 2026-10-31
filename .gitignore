@@ -1,0 +1,52 @@
+# Local environments and generated Python/build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Private data, checkpoints and experiment artifacts
+data/
+datasets/
+datasets_raw/
+raw/
+checkpoints/
+output/
+outputs/
+runs/
+cache/
+raw_cache/
+.lamoe/
+logs/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.parquet
+*.arrow
+*.bin
+*.npy
+*.npz
+*.sqlite*
+*.jsonl
+
+# Local credentials and machine-specific files
+.env
+.env.*
+*.pem
+*.key
+credentials*
+token.json
+Thumbs.db
+.DS_Store
+
+# Local experiment archives and separate notice folders are not published.
+research_runs/
+third_party/
+tools/
+test/
+tests/
+lamoe/train/A100_PREFLIGHT.md

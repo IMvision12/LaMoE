@@ -1,0 +1,53 @@
+{%- if not messages -%}
+{{- raise_exception('LaMoE requires a nonempty message history') -}}
+{%- endif -%}
+{%- if tools is defined and tools and messages[0]['role'] != 'system' -%}
+{{- raise_exception('LaMoE tool definitions require an explicit first system message') -}}
+{%- endif -%}
+{{- bos_token -}}
+{%- for message in messages -%}
+{%- set role = message['role'] -%}
+{%- if role not in ['system', 'user', 'assistant', 'tool'] -%}
+{{- raise_exception('Unsupported LaMoE message role') -}}
+{%- endif -%}
+{%- if message['content'] is not string -%}
+{{- raise_exception('LaMoE supports text content only') -}}
+{%- endif -%}
+{%- set ns = namespace(body=message['content']) -%}
+{%- for marker in ['<|pad|>', '<|unk|>', '<|bos|>', '<|eos|>', '<|fim_prefix|>', '<|fim_suffix|>', '<|fim_middle|>', '<|system|>', '<|user|>', '<|assistant|>', '<|end_turn|>'] -%}
+{%- if marker in ns.body -%}
+{{- raise_exception('Literal special-token strings inside content need the native LaMoE token renderer') -}}
+{%- endif -%}
+{%- endfor -%}
+{%- if role == 'system' and tools is defined and tools -%}
+{%- set ns.body = ns.body + '\n<tools>' + (tools | tojson(ensure_ascii=False, sort_keys=True, separators=(',', ':'))) + '</tools>' -%}
+{%- endif -%}
+{%- if role == 'assistant' -%}
+{%- for call in message.get('tool_calls', []) -%}
+{%- set function = call['function'] -%}
+{%- if function['arguments'] is not mapping -%}
+{{- raise_exception('HF LaMoE template expects tool arguments as a dictionary') -}}
+{%- endif -%}
+{%- set item = {'id': call['id'], 'name': function['name'], 'arguments': function['arguments']} -%}
+{%- set ns.body = ns.body + ('\n' if ns.body else '') + '<tool_call>' + (item | tojson(ensure_ascii=False, sort_keys=True, separators=(',', ':'))) + '</tool_call>' -%}
+{%- endfor -%}
+{%- endif -%}
+{%- if role == 'tool' -%}
+{%- set item = {'tool_call_id': message['tool_call_id'], 'content': ns.body} -%}
+{%- set ns.body = '<tool_response>' + (item | tojson(ensure_ascii=False, sort_keys=True, separators=(',', ':'))) + '</tool_response>' -%}
+{%- endif -%}
+{%- for marker in ['<|pad|>', '<|unk|>', '<|bos|>', '<|eos|>', '<|fim_prefix|>', '<|fim_suffix|>', '<|fim_middle|>', '<|system|>', '<|user|>', '<|assistant|>', '<|end_turn|>'] -%}
+{%- if marker in ns.body -%}
+{{- raise_exception('Literal special-token strings inside tool fields need the native LaMoE token renderer') -}}
+{%- endif -%}
+{%- endfor -%}
+{{- '<|' + ('user' if role == 'tool' else role) + '|>' + ns.body + '<|end_turn|>' -}}
+{%- endfor -%}
+{%- if add_generation_prompt -%}
+{%- if messages[-1]['role'] not in ['user', 'tool'] -%}
+{{- raise_exception('Generation history must end in user or tool') -}}
+{%- endif -%}
+{{- '<|assistant|>' -}}
+{%- elif messages[-1]['role'] == 'assistant' and not messages[-1].get('tool_calls') -%}
+{{- eos_token -}}
+{%- endif -%}

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160" role="img" aria-labelledby="moe-title moe-desc">
+<title id="moe-title">Shared + Routed Mixture of Experts</title><desc id="moe-desc">Even-numbered decoder layers | 8 independent experts | top-2 per token | no capacity dropping</desc>
+<defs>
+ <pattern id="moe-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#6686a4" opacity=".13"/></pattern>
+ <radialGradient id="moe-glow"><stop offset="0" stop-color="#1a364d" stop-opacity=".55"/><stop offset="1" stop-color="#0b1220" stop-opacity="0"/></radialGradient>
+ <marker id="moe-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#91abc1"/></marker>
+ <marker id="moe-skip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#d9ac6f"/></marker>
+</defs>
+<rect width="1600" height="1160" rx="24" fill="#0b1220"/>
+<rect width="1600" height="1160" rx="24" fill="url(#moe-dots)"/>
+<ellipse cx="1056.0" cy="380" rx="680" ry="480" fill="url(#moe-glow)"/>
+<style>text{font-family:Arial,Helvetica,sans-serif}.node text{pointer-events:none}.node:hover .box{stroke-width:3}.edge{fill:none;stroke:#91abc1;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.node.selected .box,.node.match .box{stroke:#fff;stroke-width:4}.node:focus-visible .box{stroke:#fff;stroke-width:4}</style>
+<text x="48" y="46" font-size="16" fill="#8fa7c6" font-weight="700" text-anchor="start" letter-spacing="2">LAMOE / MODEL GRAPH</text>
+<text x="48" y="94" font-size="36" fill="#f2f6ff" font-weight="700" text-anchor="start" letter-spacing="0">Shared + Routed Mixture of Experts</text>
+<text x="48" y="130" font-size="19" fill="#a1b1c8" font-weight="400" text-anchor="start" letter-spacing="0">Even-numbered decoder layers | 8 independent experts | top-2 per token | no capacity dropping</text>
+<rect x="36" y="170" width="1528" height="900" rx="20" fill="#101b2b" fill-opacity=".82" stroke="#28374a"/>
+<text x="60" y="204" font-size="18" fill="#e1ebfa" font-weight="700" text-anchor="start" letter-spacing="1">MOE / EXPANDED</text>
+<text x="60" y="233" font-size="16" fill="#8fa5bf" font-weight="400" text-anchor="start" letter-spacing="0">Attention fusion and expert selection use independent routers</text>
+<g class="node" data-node="moe-input" aria-label="Normalized input v"><title>Normalized input v: Only valid tokens participate in dispatch and router statistics.</title><rect class="box" x="650" y="262" width="300" height="70" rx="12" fill="#163749" stroke="#55cbe8" stroke-width="2"/>
+<text x="800.0" y="293.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Normalized input v</text>
+<text x="800.0" y="320.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">hidden width 768</text>
+</g>
+<path class="edge" d="M800 332 V364 H330 V410" marker-end="url(#moe-arrow)"/>
+<path class="edge" d="M800 364 H1060 V410" marker-end="url(#moe-arrow)"/>
+<g class="node" data-node="moe-shared" aria-label="Always-active shared expert"><title>Always-active shared expert: The shared expert runs for every valid token. Its output is added without a routed-expert weight.</title><rect class="box" x="140" y="410" width="380" height="116" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="330.0" y="464.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Always-active shared expert</text>
+<text x="330.0" y="491.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">SwiGLU: 768 to 512 to 768</text>
+</g>
+<g class="node" data-node="moe-router" aria-label="Expert router / Linear"><title>Expert router / Linear: A distinct bias-free linear router produces one logit per expert. These are not the hybrid attention fusion weights.</title><rect class="box" x="835" y="410" width="450" height="94" rx="12" fill="#493921" stroke="#f4bf68" stroke-width="2"/>
+<text x="1060.0" y="453.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Expert router / Linear</text>
+<text x="1060.0" y="480.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">768 to 8 logits (FP32)</text>
+</g>
+<path class="edge" d="M1060 504 V550" marker-end="url(#moe-arrow)"/>
+<g class="node" data-node="moe-topk" aria-label="Top-2 + selected softmax"><title>Top-2 + selected softmax: Select the two highest logits and normalize only those selected logits with softmax.</title><rect class="box" x="835" y="550" width="450" height="94" rx="12" fill="#493921" stroke="#f4bf68" stroke-width="2"/>
+<text x="1060.0" y="593.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Top-2 + selected softmax</text>
+<text x="1060.0" y="620.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">2 weights sum to 1 per token</text>
+</g>
+<path class="edge" d="M1060 644 V682" marker-end="url(#moe-arrow)"/>
+<rect x="604" y="682" width="912" height="166" rx="16" fill="#102a28" stroke="#3a8e76"/>
+<text x="1060" y="714" font-size="18" fill="#a7e9cd" font-weight="700" text-anchor="middle" letter-spacing="1">8 INDEPENDENT SwiGLU EXPERTS</text>
+<g class="node" data-node="moe-expert-0" aria-label="E0"><title>E0: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="625" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="671.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E0</text>
+</g>
+<g class="node" data-node="moe-expert-1" aria-label="E1"><title>E1: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="734" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="780.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E1</text>
+</g>
+<g class="node" data-node="moe-expert-2" aria-label="E2"><title>E2: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="843" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="889.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E2</text>
+</g>
+<g class="node" data-node="moe-expert-3" aria-label="E3"><title>E3: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="952" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="998.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E3</text>
+</g>
+<g class="node" data-node="moe-expert-4" aria-label="E4"><title>E4: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="1061" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1107.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E4</text>
+</g>
+<g class="node" data-node="moe-expert-5" aria-label="E5"><title>E5: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="1170" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1216.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E5</text>
+</g>
+<g class="node" data-node="moe-expert-6" aria-label="E6"><title>E6: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="1279" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1325.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E6</text>
+</g>
+<g class="node" data-node="moe-expert-7" aria-label="E7"><title>E7: One routed SwiGLU expert. Two experts are selected dynamically for each token; no fixed expert pair is implied.</title><rect class="box" x="1388" y="740" width="92" height="64" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1434.0" y="779.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">E7</text>
+</g>
+<text x="1060" y="831" font-size="16" fill="#a7c9be" font-weight="400" text-anchor="middle" letter-spacing="0">Each expert: 768 to 1,024 to 768</text>
+<path class="edge" d="M1060 848 V896" marker-end="url(#moe-arrow)"/>
+<g class="node" data-node="moe-weighted" aria-label="Weighted sum of selected outputs"><title>Weighted sum of selected outputs: The selected expert outputs are scaled by their router weights and accumulated back into the original token positions.</title><rect class="box" x="830" y="896" width="460" height="76" rx="12" fill="#153f37" stroke="#68d9ac" stroke-width="2"/>
+<text x="1060.0" y="930.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Weighted sum of selected outputs</text>
+<text x="1060.0" y="957.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">w1 x expert 1 + w2 x expert 2</text>
+</g>
+<path class="edge" d="M330 526 V1010 H610" marker-end="url(#moe-arrow)"/>
+<path class="edge" d="M1060 972 V1010 H990" marker-end="url(#moe-arrow)"/>
+<g class="node" data-node="moe-sum" aria-label="Add shared + routed"><title>Add shared + routed: Final MoE output equals the always-active shared output plus the selected weighted expert outputs.</title><rect class="box" x="610" y="978" width="380" height="64" rx="12" fill="#4b2f1d" stroke="#ffab61" stroke-width="2"/>
+<text x="800.0" y="1006.0" font-size="21" fill="#f2f6ff" font-weight="600" text-anchor="middle" letter-spacing="0">Add shared + routed</text>
+<text x="800.0" y="1033.0" font-size="15" fill="#c1cde0" font-weight="400" text-anchor="middle" letter-spacing="0">output width 768</text>
+</g>
+<text x="48" y="1130" font-size="16" fill="#879db8" font-weight="400" text-anchor="start" letter-spacing="0">Source-derived schematic | FP32 master weights | No runtime trace or latency claim</text>
+</svg>

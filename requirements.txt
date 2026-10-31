@@ -1,0 +1,3 @@
+# Model runtime and read-only loading of the three supported training datasets.
+-r requirements-model.txt
+-r requirements-preprocessing.txt
